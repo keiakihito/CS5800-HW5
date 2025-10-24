@@ -1,0 +1,86 @@
+@startuml
+title Problem 1 - Flyweight Pattern (Text Editor)
+
+skinparam classAttributeIconSize 0
+
+enum Font {
+  Arial
+  Calibri
+  Verdana
+}
+
+enum TextColor {
+  Red
+  Blue
+  Black
+}
+
+class CharacterStyle <<flyweight>> {
+  -font: Font
+  -size: int
+  -color: TextColor
+  +describe(): String
+}
+
+class CharacterStyleFactory <<singleton>> {
+  -instance: CharacterStyleFactory
+  -FONT_OPTIONS: Font[3]
+  -COLOR_OPTIONS: TextColor[3]
+  -SIZE_OPTIONS: int[3]
+  -stylePool: Map<String, CharacterStyle>
+  +getInstance(): CharacterStyleFactory
+  +getStyle(fontIndex: int, sizeIndex: int, colorIndex: int): CharacterStyle
+}
+
+class StyledCharacter <<extrinsic>> {
+  -char: char
+  -style: CharacterStyle
+  +describe(): String
+}
+
+class StyledString {
+  -glyphs: List<StyledCharacter>
+  +append(char: char, fontIndex: int, sizeIndex: int, colorIndex: int)
+  +printStyles(): List<String>
+}
+
+class Driver <<client>> {
+  +main()
+}
+
+CharacterStyleFactory o--> CharacterStyle : caches
+StyledCharacter --> CharacterStyle : references
+StyledString *-- StyledCharacter
+Driver --> StyledString
+Driver ..> CharacterStyleFactory
+
+note top of CharacterStyle
+Intrinsic state = reusable styling triple.
+end note
+
+note bottom of CharacterStyleFactory
+Singleton ensures one shared pool of styles.
+Indices map to the three allowed values
+per assignment (Arial/Calibri/Verdana,
+Red/Blue/Black, 12/14/16).
+end note
+
+note right of StyledCharacter
+Holds extrinsic data (char + order) and
+points to the pooled CharacterStyle.
+Describe() returns strings like
+"0:H -> Arial, Red, 12".
+end note
+
+note right of StyledString
+Acts like BigString: orchestrates glyphs,
+calls the factory, and produces the styled
+representation for main().
+end note
+
+note left of Driver
+Driver builds "HelloWorldCS5800"
+using at least four style variations.
+end note
+
+@enduml
