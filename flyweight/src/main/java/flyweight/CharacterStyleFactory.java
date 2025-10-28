@@ -3,6 +3,9 @@ package flyweight;
 import java.util.HashMap;
 import java.util.Map;
 
+// The CharacterStyleFactory class is a singleton class which enables to reference the same object multiple times.
+// It ensure that the object is shared and reused by the client in multiple places.
+// So that flyweight pattern helps to reduce duplicatoin with singleton pattern.
 public class CharacterStyleFactory {
     private static final CharacterStyleFactory INSTANCE = new CharacterStyleFactory();
 
