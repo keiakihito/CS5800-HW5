@@ -19,6 +19,8 @@ public class Driver {
         int[] fontIndexes =  {0, 0, 1, 1, 2, 2, 0, 0, 1, 1, 2, 2, 0, 0, 1, 1};
         int[] colorIndexes = {0, 1, 0, 1, 2, 0, 2, 1, 0, 1, 2, 0, 1, 2, 1, 0};
         int[] sizeIndexes =  {0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0};
+        // Please note: positions 2 and 8 (both 'l') use the same index triple (1,0,2),
+        // It means that the CharacterStyleFactory class returns the same instance with singleton pattern.
 
         for (int i = 0; i < message.length; i++) {
             text.append(message[i], fontIndexes[i], colorIndexes[i], sizeIndexes[i]);
