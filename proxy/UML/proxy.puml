@@ -1,0 +1,59 @@
+@startuml
+title Problem 2 - Proxy Pattern (Music Metadata Service)
+
+skinparam classAttributeIconSize 0
+
+class Song {
+  -id: Integer
+  -title: String
+  -artist: String
+  -album: String
+  -duration: int
+  +getId(): Integer
+  +getTitle(): String
+  +getArtist(): String
+  +getAlbum(): String
+  +getDuration(): int
+}
+
+interface SongService {
+  +searchById(songId: Integer): Song
+  +searchByTitle(title: String): List<Song>
+  +searchByAlbum(album: String): List<Song>
+}
+
+class RemoteSongService <<real subject>> {
+  -songs: List<Song>
+  +RemoteSongService(songs: List<Song>)
+  +searchById(songId: Integer): Song
+  +searchByTitle(title: String): List<Song>
+  +searchByAlbum(album: String): List<Song>
+}
+
+class CachedSongServiceProxy <<proxy>> {
+  -realService: SongService
+  -idCache: Map<Integer, Song>
+  -titleCache: Map<String, List<Song>>
+  -albumCache: Map<String, List<Song>>
+  +CachedSongServiceProxy(realService: SongService)
+  +searchById(songId: Integer): Song
+  +searchByTitle(title: String): List<Song>
+  +searchByAlbum(album: String): List<Song>
+}
+
+class Driver <<client>> {
+  +main(args: String[])
+}
+
+SongService <|.. RemoteSongService
+SongService <|.. CachedSongServiceProxy
+CachedSongServiceProxy --> RemoteSongService : Queries the real service when cache misses
+Driver --> SongService : uses proxy
+Driver ..> Song : constructs songs
+
+note top of CachedSongServiceProxy
+Caches results in-memory to avoid repeated
+remote latency.
+end note
+
+@enduml
