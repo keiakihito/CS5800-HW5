@@ -1,8 +1,16 @@
 package proxy;
 
+import java.util.Collections;
 import java.util.List;
 
 public class RemoteSongService implements SongService {
+
+    private final List<Song> songs;
+
+    public RemoteSongService(List<Song> songs) {
+        this.songs = songs;
+    }
+
     @Override
     public Song searchById(Integer songID) {
         return null;
@@ -10,11 +18,11 @@ public class RemoteSongService implements SongService {
 
     @Override
     public List<Song> searchByTitle(String title) {
-        return null;
+        return Collections.emptyList();
     }
 
     @Override
     public List<Song> searchByAlbum(String album) {
-        return null;
+        return Collections.emptyList();
     }
 }
