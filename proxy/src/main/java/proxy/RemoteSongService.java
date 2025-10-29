@@ -70,6 +70,7 @@ public class RemoteSongService implements SongService {
     private void delay() {
         try {
             Thread.sleep(1000);
+            System.out.print("... delay for 1 second ... : ");
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
