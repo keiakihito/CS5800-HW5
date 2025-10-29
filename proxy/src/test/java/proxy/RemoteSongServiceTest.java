@@ -19,9 +19,9 @@ class RemoteSongServiceTest {
 
     @BeforeEach
     void setUp() {
-        song1 = new Song(1, "Hello", "Adele", "25", 295);
-        song2 = new Song(2, "Believer", "Imagine Dragons", "Evolve", 204);
-        song3 = new Song(3, "On Fire", "Switchfoot", "The Beautiful Letdown", 224);
+        song1 = new Song(1, "Africa", "Toto", "Toto IV", 295);
+        song2 = new Song(2, "Birdland", "Weather Report", "Heavy Weather", 204);
+        song3 = new Song(3, "Chicken", "Weather Report", "Live at Montreux", 187);
         service = new RemoteSongService(List.of(song1, song2, song3));
     }
 
@@ -42,14 +42,14 @@ class RemoteSongServiceTest {
 
     @Test
     void searchByTitleReturnsMatchingSongsIgnoringCase() {
-        List<Song> result = service.searchByTitle("fire");
+        List<Song> result = service.searchByTitle("Birdland");
 
-        assertEquals(List.of(song3), result);
+        assertEquals(List.of(song2), result);
     }
 
     @Test
     void searchByAlbumReturnsAllSongsInAlbum() {
-        List<Song> result = service.searchByAlbum("evolve");
+        List<Song> result = service.searchByAlbum("Heavy Weather");
 
         assertEquals(List.of(song2), result);
     }

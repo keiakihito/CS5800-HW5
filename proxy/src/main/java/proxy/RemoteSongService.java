@@ -1,28 +1,73 @@
 package proxy;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class RemoteSongService implements SongService {
 
-    private final List<Song> songs;
+    private final List<Song> _songs;
 
     public RemoteSongService(List<Song> songs) {
-        this.songs = songs;
+        // When the class is given a null list, it will be converted to an empty list as a special object
+        // The idea comes from clean code by Uncle Bob 
+        this._songs = songs == null ? Collections.emptyList() : new ArrayList<>(songs);
     }
 
     @Override
     public Song searchById(Integer songID) {
+        delay();
+        if (songID == null) {
+            return null;
+        }
+        for (Song song : _songs) {
+            if (Objects.equals(song.getId(), songID)) {
+                return song;
+            }
+        }
         return null;
     }
 
     @Override
     public List<Song> searchByTitle(String title) {
-        return Collections.emptyList();
+        delay();
+        if (title == null || title.isEmpty()) {
+            // Same concept from the constructor initialization.
+            return Collections.emptyList();
+        }
+        String query = title.toLowerCase();
+        List<Song> results = new ArrayList<>();
+        for (Song song : _songs) {
+            if (song.getTitle().toLowerCase().contains(query)) {
+                results.add(song);
+            }
+        }
+        return results;
     }
 
     @Override
     public List<Song> searchByAlbum(String album) {
-        return Collections.emptyList();
+        delay();
+        if (album == null || album.isEmpty()) {
+            // Same concept from the constructor initialization.
+            return Collections.emptyList();
+        }
+        String query = album.toLowerCase();
+        List<Song> results = new ArrayList<>();
+        for (Song song : _songs) {
+            if (song.getAlbum().toLowerCase().contains(query)) {
+                results.add(song);
+            }
+        }
+        return results;
+    }
+
+    private void delay() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 }
