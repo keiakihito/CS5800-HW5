@@ -5,6 +5,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+// We mock the remote song service like spotify or apple music. 
+// The RemoteSongService class is a real subject class that implements the SongService interface.
+// When the CachedSongServiceProxy class could not find the results in the cache, 
+// it will delegate the call to the RemoteSongService to get the results with Proxy Pattern.
 public class RemoteSongService implements SongService {
 
     private final List<Song> _songs;
